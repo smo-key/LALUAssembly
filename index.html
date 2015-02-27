@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <title>LASA Assembly</title>
+    <meta name="author" content="Arthur Pachachura">
+    <meta name="ROBOTS" content="INDEX, FOLLOW">
+    <meta name="Keywords" content="Trello, PDF, LaTeX">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="LASA ALU Assembly Interpreter">
+  </head>
+
+  <!--  Load External Javascript -->
+  <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+  <script type="text/javascript" src="http://code.arthurpachachura.com/assets/links-main.js"></script>
+
+  <script src="/js/codemirror.js"></script>
+  <link rel="stylesheet" href="/css/codemirror.css">
+  <script src="/js/lalu.js"></script>
+
+  <!--  Load CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="fonts/fonts.css" rel="stylesheet">
+  <link href="css/main.css" rel="stylesheet">
+
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-top">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">LALU Tools</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-top">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Assember</a></li>
+<!--            <li><a href="#">Interpreter</a></li>-->
+            <li><a href="#">Reference</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid fragment">
+      <div class="col=md-6">
+        Assembly
+        <textarea id="code-lalu" name="code">ld a
+ld b</textarea>
+      </div>
+      <div class="col=md-6">
+        Image
+        <textarea id="code-text" name="code">ld a
+ld b</textarea>
+      </div>
+    </div>
+
+    <script src="/js/main.js"></script>
+  </body>
+</html>
