@@ -3,8 +3,10 @@
 .CodeMirror {
   /* Set height, width, borders, and global font properties here */
   font-family: monospace;
-  height: 300px;
+  position: relative;
+  height: 100%;
   color: black;
+  display: block;
 }
 
 /* PADDING */
@@ -24,7 +26,7 @@
 
 .CodeMirror-gutters {
   border-right: 1px solid #ddd;
-  background-color: #f7f7f7;
+  background-color: #fafafa;
   white-space: nowrap;
 }
 .CodeMirror-linenumbers {}

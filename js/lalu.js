@@ -31,7 +31,6 @@ CodeMirror.defineMode('lalu', function() {
 
       if (stream.eatWhile(/\w/)) {
         w = stream.current();
-        console.log(w);
         if (keywords1.test(w)) {
           state.context = 1;
           return 'keyword';
