@@ -36,19 +36,19 @@ body {
   float: left;
   color: #fff;
   padding: 6px;
+  padding-left: 0;
   margin-bottom: 0;
-}
-.titlearea i
-{
-  float: left;
-  font-size: 20px;
-  padding: 0;
-  margin-top: 16px;
-  color: #00a7ff;
-  font-weight: 400;
-  padding-right: 6px;
 }
 .titlearea.one h4, .titlearea.one i { color: #006ca5; }
 .titlearea.two h4, .titlearea.two i { color: #008e0b; }
 .CodeMirror.one { border-top: 3px solid #0094e2; }
-.CodeMirror.two { border-top: 3px solid #00a80d; color: #444;}
+.CodeMirror.two
+{
+  border-top: 3px solid #00a80d;
+  color: #666;
+  background-color: #f0f0f0;
+}
+.CodeMirror.two .CodeMirror-gutters {
+  background-color: #f0f0f0;
+  border-right: 0;
+}
