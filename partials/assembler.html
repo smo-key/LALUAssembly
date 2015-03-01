@@ -3,11 +3,9 @@
     <select class="form-control" id="assemblystyle">
     </select>
   </div>
-  <textarea id="code-lalu" name="code">ld a, 0h
-ld a, 1h</textarea>
+  <textarea id="code-lalu" name="code">{{> assemblerin}}</textarea>
 </div>
 <div class="col-sm-6">
   <div class="titlearea output"><h4>Output</h4><button type="button" class="btn btn-success" id="downloadbutton"><i class="fa fa-download"></i> &nbsp;Save Logisim binary</button><h5 id="compilestatus"><i class="fa fa-cog fa-spin"></i>Compiling...</h5></div>
-  <textarea id="code-text" name="code">03  ;load a into 0h
-13  ;load a into 1h</textarea>
+  <textarea id="code-text" name="code">{{> assemblerout}}</textarea>
 </div>

@@ -66,7 +66,5 @@ function resize() {
   else { $('.fragment').height(h - $('navbar').height() - 64); }
 }
 function changeCode() {
-  console.log("FIRED!");
-
   assemble();
 }

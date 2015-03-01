@@ -62,6 +62,52 @@ app.use(cookieparser());
 
 /* SERVER */
 
+function convertBase(num, baseFrom, baseTo) {
+  return parseInt(num, baseFrom).toString(baseTo);
+};
+
+function bits(hex, base) {
+  //get the length of a hexadecimal number in bits
+  return convertBase(hex, base, 2).length;
+}
+
+function gettype(s) {
+  //number recognition
+  var hex = /^([a-f\d]+h)/i;
+  var binary1 = /^[01]+b/i;
+  var binary2 = /^0x[01]+/i;
+  var dec = /^\d+/i;
+  var bool = /^(true|false)/i;
+  if (hex.test(s))
+  {
+    s = s.substring(0, s.length - 1);
+    return [ s, bits(s, 16) ];
+  }
+  else if (binary1.test(s))
+  {
+    s = s.substring(0, s.length - 1);
+    return [ convertBase(s, 2, 16), bits(s, 2) ];
+  }
+  else if (binary2.test(s))
+  {
+    s = s.substring(2, s.length);
+    return [ convertBase(s, 2, 16), bits(s, 2) ];
+  }
+  else if (dec.test(s))
+  {
+    return [ convertBase(s, 10, 16), bits(s, 10) ];
+  }
+  else if (bool.test(s))
+  {
+    if (s == "true") { return ["1", 1]; }
+    if (s == "false") { return ["0", 1]; }
+  }
+  else
+  {
+    return undefined;
+  }
+}
+
 var list = { };
 function buildlist() {
   list = { };
@@ -92,7 +138,6 @@ buildlist();
 // API requests
 app.use('/api/asm/list', function(req, res) {
   //list all assembly presets
-  console.log(list);
   sendjson(list, res);
 });
 app.use('/api/asm', function(req, res) {
@@ -106,37 +151,62 @@ app.use('/api/asm', function(req, res) {
 
   var j = s.toString().split("\n");
   j.forEach(function(line) {
-    console.log("TEST");
     line = S(line).trim().toString();
     //TODO remove everything after a semicolon
     var words = line.match(/\w+/ig);
     //TODO remove "h" from the ends of words and convert these to hex
     if (words != null) {
-      var out = [ 'ER', "instruction not found"];
+      var out = [ 'ER', "instruction '" + words[0] + "' not found"];
       if (format.ops[words[0]] !== undefined)
       {
         if (format.ops[words[0]].args !== undefined)
         {
           var minargs = 0;
           var donecounting = false;
-          format.ops[words[0]].args.forEach(function(arg) {
+          var args = format.ops[words[0]].args;
+          args.forEach(function(arg) {
             if (!donecounting && arg.req) { minargs++; } else
             { donecounting = true; }
           });
           if (minargs <= words.length - 1)
           {
-            var inst = format.ops[words[0]].result;
-            var l = words.length;
-            if (!(inst === undefined | inst == null)) {
-              console.log(words);
-              console.log(inst);
-              if (l == 1) { out = inst(); }
-              else if (l == 2) { out = inst(words[1]); }
-              else if (l == 3) { out = inst(words[1], words[2]); }
-              else if (l == 4) { out = inst(words[1], words[2], words[3]); }
-              else if (l == 5) { out = inst(words[1], words[2], words[3], words[4]); }
-              else if (l == 6) { out = inst(words[1], words[2], words[3], words[4], words[5]); }
-              else { out = [ 'ER', "too many parameters" ]; }
+            //test if args are compatible with input
+            var argsok = true;
+            for (var i = 0; i < args.length; i++) {
+              var wrd = words[i + 1];
+              var type = gettype(wrd);
+              console.log(wrd);
+              console.log(type);
+              if (type === undefined)
+              {
+                out = [ 'ER', "unknown parameter '" + wrd + "'" ];
+                argsok = false;
+                break;
+              }
+              else if (args[i].maxbits !== undefined)
+              {
+                if (type[1] > args[i].maxbits)
+                {
+                  out = [ 'ER', "'" + wrd + "' greater than " + args[i].maxbits + " bits" ];
+                  argsok = false;
+                  break;
+                }
+                else { words[i + 1] = type[0]; }
+              }
+              else { words[i + 1] = type[0]; }
+            }
+            if (argsok) {
+              var inst = format.ops[words[0]].result;
+              var l = words.length;
+              if (!(inst === undefined | inst == null)) {
+                if (l == 1) { out = inst(); }
+                else if (l == 2) { out = inst(words[1]); }
+                else if (l == 3) { out = inst(words[1], words[2]); }
+                else if (l == 4) { out = inst(words[1], words[2], words[3]); }
+                else if (l == 5) { out = inst(words[1], words[2], words[3], words[4]); }
+                else if (l == 6) { out = inst(words[1], words[2], words[3], words[4], words[5]); }
+                else { out = [ 'ER', "too many parameters" ]; }
+              }
             }
           } else { out = [ 'ER', "too few parameters" ]; }
         }
@@ -159,7 +229,9 @@ app.get('/docs', function (req, res) {
 app.get('/', function (req, res) {
   res.render('index', {
     partials: {
-      fragment: 'assembler'
+      fragment: 'assembler',
+      assemblerin: 'assemblerin',
+      assemblerout: 'assemblerout'
     }
   });
 });

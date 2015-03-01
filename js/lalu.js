@@ -15,7 +15,7 @@ CodeMirror.defineMode('lalu', function() {
   var keywords1 = /^(\w)+\b/i;
   var variables1 = /^([a-z]x?)\b/i;
   var variables2 = /^(true|false)\b/i;
-  var numbers = /^([\da-f]+h|[01]+b|\d+)\b/i;
+  var numbers = /^([\da-f]+h|[01]+b|0x([01])+|\d+)\b/i;
 
   return {
     startState: function() {
