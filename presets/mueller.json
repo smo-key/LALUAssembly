@@ -1,0 +1,28 @@
+{
+  "name": "Mueller",
+  "ops": {
+    "add": {
+      "name": "Add",
+      "info": "Add registers A and B together and store in A",
+      "args": [ ],
+      "minargs": 0,
+      "result": "function() { return [ '00', 'a + b -> a' ]; }"
+    },
+    "sub": {
+      "name": "Subtract",
+      "info": "Substract B from A and store result in A",
+      "args": [ ],
+      "minargs": 0,
+      "result": "function() { return [ '01', 'a - b -> a' ]; }"
+    },
+    "ld": {
+      "name": "Load",
+      "info": "Loads the data from an address in RAM into A",
+      "args": [{"name": "addr[3:0]",
+              "info": "Address in RAM",
+              "type": "4-bit Memory address"}],
+      "minargs": 1,
+      "result": "function(addr) { return [ addr.toString(16) + '2', 'data[' + addr.toString(16) + '] -> a' ] }"
+    }
+  }
+}

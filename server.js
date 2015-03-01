@@ -9,6 +9,7 @@ var http = require("http"),
     logger = require('morgan'),
     bodyParser = require("body-parser"),
     cookieparser = require('cookie-parser');
+    S = require('string');
 
 //initialize renderer
 var app = express();
@@ -61,15 +62,81 @@ app.use(cookieparser());
 
 /* SERVER */
 
+var list = { };
+function buildlist() {
+  list = { };
+  fs.readdir("presets/", function(err, files) {
+    files.forEach(function(file) {
+      fs.readFile("presets/" + file, function(err, data) {
+        try {
+          var item = JSON.parse(data, function (key, value) {
+            if (value && (typeof value === 'string') && value.indexOf("function") === 0) {
+                // we can only pass a function as string in JSON ==> doing a real function
+                var jsFunc = new Function('return ' + value)();
+                return jsFunc;
+            }
+
+            return value;
+          });
+          item.id = path.basename(file, '.json');
+          list[item.id] = item;
+        } catch (err) {
+          console.error("Error parsing " + path.basename(file, '.json') + ":\r\n" + err.message + err.stack);
+        }
+      });
+    });
+  });
+}
+buildlist();
+
 // API requests
 app.use('/api/asm/list', function(req, res) {
   //list all assembly presets
-  var list = [{ name: "Arthur-Brandon", id: 'ab' },
-              { name: "Mueller", id: 'mulr' } ];
+  console.log(list);
   sendjson(list, res);
 });
 app.use('/api/asm', function(req, res) {
   //assemble
+  if (list[req.query.type] === undefined) { sendjson({text: "Error compiling: preset not specified"}, res); }
+
+  var format = list[req.query.type];
+  var s = req.query.text;
+  var text = ""; //text output
+  //TODO logisim output
+
+  var j = s.toString().split("\n");
+  j.forEach(function(line) {
+    console.log("TEST");
+    line = S(line).trim().toString();
+    //TODO remove everything after a semicolon
+    var words = line.match(/\w+/ig);
+    //TODO remove "h" from the ends of words and convert these to hex
+    if (words != null) {
+      var out = [ 'ER', "instruction not found"];
+      if (format.ops[words[0]] !== undefined)
+      {
+        if (format.ops[words[0]].minargs <= words.length - 1)
+        {
+          var inst = format.ops[words[0]].result;
+          var l = words.length;
+          if (!(inst === undefined | inst == null)) {
+            console.log(words);
+            console.log(inst);
+            if (l == 1) { out = inst(); }
+            else if (l == 2) { out = inst(words[1]); }
+            else if (l == 3) { out = inst(words[1], words[2]); }
+            else if (l == 4) { out = inst(words[1], words[2], words[3]); }
+            else if (l == 5) { out = inst(words[1], words[2], words[3], words[4]); }
+            else if (l == 6) { out = inst(words[1], words[2], words[3], words[4], words[5]); }
+            else { out = [ 'ER', "too many parameters" ]; }
+          }
+        } else { out = [ 'ER', "too few parameters" ]; }
+      }
+      text = text + out[0].toString() + "  ;" + out[1].toString() + "\r\n";
+    }
+  });
+  sendjson({text: text}, res);
+
 });
 
 // Fragment requests

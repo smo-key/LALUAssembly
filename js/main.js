@@ -1,11 +1,11 @@
 resize();
 getlist();
 
-var cm1 = CodeMirror.fromTextArea(document.getElementById("code-lalu"), {
+var input = CodeMirror.fromTextArea(document.getElementById("code-lalu"), {
   lineNumbers: true,
   mode:  "lalu"
 });
-var cm2 = CodeMirror.fromTextArea(document.getElementById("code-text"), {
+var output = CodeMirror.fromTextArea(document.getElementById("code-text"), {
   lineNumbers: true,
   mode:  "binary",
   readOnly: true,
@@ -19,6 +19,7 @@ $('#compilestatus').css("display", "none");
 
 $('.CodeMirror.input').change(function() { changeCode(); });
 $('#assemblystyle').change(function() { changeCode(); });
+$('#downloadbutton').click(function() { assemble(); });
 
 $(window).resize(function() { resize(); });
 
@@ -27,12 +28,33 @@ function getlist() {
     url: "/api/asm/list",
     type: "GET",
     success: function(data) {
-      data.forEach(function(s, i) {
-        $('#assemblystyle').append('<option value="' + s.id + '">' + s.name + '</option>');
+      $.each(data, function(k, v) {
+        $('#assemblystyle').append('<option value="' + k + '">' + v.name + '</option>');
       });
     },
     failure: function() {
        $('#assemblystyle').append('<option value=-1>Default</option>');
+    }
+  });
+}
+
+var binary_logisim = "";
+
+function assemble() {
+  $.ajax({
+    url: "/api/asm",
+    type: "GET",
+    data: { type: $('#assemblystyle').val(), text: input.getValue() },
+    success: function(data) {
+      output.setValue(data.text);
+      binary_logisim = data.logisim;
+      $('#compilestatus').css("display", "none");
+      $('#downloadbutton').css("display", "block");
+    },
+    failure: function() {
+      console.error("ERROR!");
+      $('#compilestatus').css("display", "none");
+      $('#downloadbutton').css("display", "block");
     }
   });
 }
@@ -47,4 +69,5 @@ function changeCode() {
   $('#compilestatus').css("display", "block");
   $('#downloadbutton').css("display", "none");
 
+  assemble();
 }
