@@ -1,4 +1,5 @@
 resize();
+getlist();
 
 var cm1 = CodeMirror.fromTextArea(document.getElementById("code-lalu"), {
   lineNumbers: true,
@@ -21,6 +22,21 @@ $('#assemblystyle').change(function() { changeCode(); });
 
 $(window).resize(function() { resize(); });
 
+function getlist() {
+  $.ajax({
+    url: "/api/asm/list",
+    type: "GET",
+    success: function(data) {
+      data.forEach(function(s, i) {
+        $('#assemblystyle').append('<option value="' + s.id + '">' + s.name + '</option>');
+      });
+    },
+    failure: function() {
+       $('#assemblystyle').append('<option value=-1>Default</option>');
+    }
+  });
+}
+
 function resize() {
   var w = $(window).width();
   var h = $(window).height();
@@ -30,4 +46,5 @@ function resize() {
 function changeCode() {
   $('#compilestatus').css("display", "block");
   $('#downloadbutton').css("display", "none");
+
 }

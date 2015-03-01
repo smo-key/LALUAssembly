@@ -1,0 +1,36 @@
+{
+  "name": "lalutools",
+  "version": "1.0.0",
+  "description": "LASA ALU Toolkit",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/smo-key/LALUAssembly.git"
+  },
+  "keywords": [
+    "ALU",
+    "Assembler",
+    "C",
+    "Interpreter",
+    "Digital",
+    "Electronics"
+  ],
+  "author": "Arthur Pachachura",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/smo-key/LALUAssembly/issues"
+  },
+  "homepage": "https://github.com/smo-key/LALUAssembly",
+  "dependencies": {
+    "body-parser": "^1.12.0",
+    "consolidate": "^0.11.0",
+    "cookie-parser": "^1.3.4",
+    "express": "^4.12.0",
+    "morgan": "^1.5.1",
+    "mustache": "^1.1.0"
+  }
+}

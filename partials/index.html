@@ -22,9 +22,9 @@
   <script type="text/javascript" src="http://code.arthurpachachura.com/assets/links-main.js"></script>
 
   <!--  Load CSS -->
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <link href="fonts/fonts.css" rel="stylesheet">
-  <link href="css/main.css" rel="stylesheet">
+  <link href="/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/fonts/fonts.css" rel="stylesheet">
+  <link href="/css/main.css" rel="stylesheet">
 
   <body>
     <nav class="navbar navbar-default">
@@ -51,20 +51,7 @@
     </nav>
 
     <div class="container fragment">
-      <div class="col-sm-6">
-        <div class="titlearea input" id="assemblystyle"><h4>Assembly Input</h4>
-          <select class="form-control">
-<!--            <option>Arthur-Brandon</option>-->
-          </select>
-        </div>
-        <textarea id="code-lalu" name="code">ld a, 0h
-ld a, 1h</textarea>
-      </div>
-      <div class="col-sm-6">
-        <div class="titlearea output"><h4>Output</h4><button type="button" class="btn btn-success" id="downloadbutton"><i class="fa fa-download"></i> &nbsp;Save Logisim binary</button><h5 id="compilestatus"><i class="fa fa-cog fa-spin"></i>Compiling...</h5></div>
-        <textarea id="code-text" name="code">03  ;load a into 0h
-13  ;load a into 1h</textarea>
-      </div>
+      {{> fragment}}
     </div>
 
     <script src="/js/main.js"></script>
