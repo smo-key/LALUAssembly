@@ -15,12 +15,11 @@
   <!--  Load External Javascript -->
   <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
   <script type="text/javascript" src="js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="js/main.js"></script>
-  <script type="text/javascript" src="http://code.arthurpachachura.com/assets/links-main.js"></script>
-
   <script src="/js/codemirror.js"></script>
   <link rel="stylesheet" href="/css/codemirror.css">
   <script src="/js/lalu.js"></script>
+  <script src="/js/binary.js"></script>
+  <script type="text/javascript" src="http://code.arthurpachachura.com/assets/links-main.js"></script>
 
   <!--  Load CSS -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -51,16 +50,21 @@
       </div>
     </nav>
 
-    <div class="container-fluid fragment">
+    <div class="container fragment">
       <div class="col-sm-6">
-        <div class="titlearea one"><h4>Assembly Input</h4></div>
-        <textarea id="code-lalu" name="code">ld a
-ld b</textarea>
+        <div class="titlearea input" id="assemblystyle"><h4>Assembly Input</h4>
+          <select class="form-control">
+            <option>Mueller (default)</option>
+            <option>Arthur-Brandon</option>
+          </select>
+        </div>
+        <textarea id="code-lalu" name="code">ld a, 0h
+ld a, 1h</textarea>
       </div>
       <div class="col-sm-6">
-        <div class="titlearea two"><h4>Output</h4></div>
-        <textarea id="code-text" name="code">ld a
-ld b</textarea>
+        <div class="titlearea output"><h4>Output</h4><button type="button" class="btn btn-success" id="downloadbutton"><i class="fa fa-download"></i> &nbsp;Save Logisim binary</button><h5 id="compilestatus"><i class="fa fa-cog fa-spin"></i>Compiling...</h5></div>
+        <textarea id="code-text" name="code">03  ;load a into 0h
+13  ;load a into 1h</textarea>
       </div>
     </div>
 
