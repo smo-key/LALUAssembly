@@ -12,7 +12,8 @@
 "use strict";
 
 CodeMirror.defineMode('binary', function() {
-  var numbers = /^(\d+)\b/i;
+  var numbers = /^(a-f\d)+\b/i;
+  var errors = /^ER+/i;
 
   return {
     startState: function() {
@@ -31,6 +32,9 @@ CodeMirror.defineMode('binary', function() {
         w = stream.current();
         if (numbers.test(w)) {
           return 'number';
+        }
+        else if (errors.test(w)) {
+          return 'error';
         }
       } else if (stream.eat(';')) {
         stream.skipToEnd();

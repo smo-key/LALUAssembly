@@ -115,22 +115,31 @@ app.use('/api/asm', function(req, res) {
       var out = [ 'ER', "instruction not found"];
       if (format.ops[words[0]] !== undefined)
       {
-        if (format.ops[words[0]].minargs <= words.length - 1)
+        if (format.ops[words[0]].args !== undefined)
         {
-          var inst = format.ops[words[0]].result;
-          var l = words.length;
-          if (!(inst === undefined | inst == null)) {
-            console.log(words);
-            console.log(inst);
-            if (l == 1) { out = inst(); }
-            else if (l == 2) { out = inst(words[1]); }
-            else if (l == 3) { out = inst(words[1], words[2]); }
-            else if (l == 4) { out = inst(words[1], words[2], words[3]); }
-            else if (l == 5) { out = inst(words[1], words[2], words[3], words[4]); }
-            else if (l == 6) { out = inst(words[1], words[2], words[3], words[4], words[5]); }
-            else { out = [ 'ER', "too many parameters" ]; }
-          }
-        } else { out = [ 'ER', "too few parameters" ]; }
+          var minargs = 0;
+          var donecounting = false;
+          format.ops[words[0]].args.forEach(function(arg) {
+            if (!donecounting && arg.req) { minargs++; } else
+            { donecounting = true; }
+          });
+          if (minargs <= words.length - 1)
+          {
+            var inst = format.ops[words[0]].result;
+            var l = words.length;
+            if (!(inst === undefined | inst == null)) {
+              console.log(words);
+              console.log(inst);
+              if (l == 1) { out = inst(); }
+              else if (l == 2) { out = inst(words[1]); }
+              else if (l == 3) { out = inst(words[1], words[2]); }
+              else if (l == 4) { out = inst(words[1], words[2], words[3]); }
+              else if (l == 5) { out = inst(words[1], words[2], words[3], words[4]); }
+              else if (l == 6) { out = inst(words[1], words[2], words[3], words[4], words[5]); }
+              else { out = [ 'ER', "too many parameters" ]; }
+            }
+          } else { out = [ 'ER', "too few parameters" ]; }
+        }
       }
       text = text + out[0].toString() + "  ;" + out[1].toString() + "\r\n";
     }

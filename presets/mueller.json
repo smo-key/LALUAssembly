@@ -5,24 +5,53 @@
       "name": "Add",
       "info": "Add registers A and B together and store in A",
       "args": [ ],
-      "minargs": 0,
-      "result": "function() { return [ '00', 'a + b -> a' ]; }"
+      "result": "function() { return [ '00', 'A + B -> A' ]; }"
     },
     "sub": {
       "name": "Subtract",
       "info": "Substract B from A and store result in A",
       "args": [ ],
-      "minargs": 0,
-      "result": "function() { return [ '01', 'a - b -> a' ]; }"
+      "result": "function() { return [ '01', 'A - B -> A' ]; }"
     },
     "ld": {
       "name": "Load",
       "info": "Loads the data from an address in RAM into A",
-      "args": [{"name": "addr[3:0]",
-              "info": "Address in RAM",
-              "type": "4-bit Memory address"}],
-      "minargs": 1,
-      "result": "function(addr) { return [ addr.toString(16) + '2', 'data[' + addr.toString(16) + '] -> a' ] }"
+      "args": [{"name": "addr[3:0]", "req": true,
+              "info": "4-bit Address in RAM"}],
+      "result": "function(addr) { return [ addr.toString(16) + '2', 'data[' + addr.toString(16) + '] -> A' ] }"
+    },
+    "exc": {
+      "name": "Exchange",
+      "info": "Exchange the values of the A and B registers",
+      "args": [ ],
+      "result": "function() { return [ '03', 'swap values of A and B' ]; }"
+    },
+    "sto": {
+      "name": "Store",
+      "info": "Stores the value of the A register into a specified location in RAM",
+      "args": [{"name": "addr[3:0]", "req": true,
+              "info": "4-bit Address in RAM"}],
+      "result": "function(addr) { return [ addr.toString(16) + '4', 'A -> data[' + addr.toString(16) + ']' ]; }"
+    },
+    "jmp": {
+      "name": "Jump",
+      "info": "Jump to the specified address in memory",
+      "args": [{"name": "addr[4:0]", "req": true,
+              "info": "5-bit Address in RAM"}],
+      "result": "function(addr) { var a = parseInt(addr, 16)*8+5; return [ a.toString(16), 'jump to ' + addr.toString(16) + 'h' ]; }"
+    },
+    "jneg": {
+      "name": "Jump if Negative",
+      "info": "Jump to address if A is negative",
+      "args": [{"name": "addr[4:0]", "req": true,
+              "info": "5-bit Address in RAM"}],
+      "result": "function(addr) { var a = parseInt(addr, 16)*8+6; return [ a.toString(16), 'jump to ' + addr.toString(16) + 'h if A<0' ]; }"
+    },
+    "lda": {
+      "name": "Load at A",
+      "info": "Load the data from the address given by A",
+      "args": [ ],
+      "result": "function(addr) { return [ '07', 'data[A] -> A' ]; }"
     }
   }
 }

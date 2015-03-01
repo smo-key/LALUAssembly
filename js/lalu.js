@@ -12,8 +12,8 @@
 "use strict";
 
 CodeMirror.defineMode('lalu', function() {
-  var keywords1 = /^(add|sub|ld|exc|sto|jmp|jin)\b/i;
-  var variables1 = /^((a|b)x?)\b/i;
+  var keywords1 = /^(\w)+\b/i;
+  var variables1 = /^([a-z]x?)\b/i;
   var variables2 = /^(true|false)\b/i;
   var numbers = /^([\da-f]+h|[01]+b|\d+)\b/i;
 
@@ -32,11 +32,7 @@ CodeMirror.defineMode('lalu', function() {
 
       if (stream.eatWhile(/\w/)) {
         w = stream.current();
-        if (keywords1.test(w)) {
-          state.context = 1;
-          return 'keyword';
-        }
-        else if (variables1.test(w)) {
+        if (variables1.test(w)) {
           return 'variable-2';
         }
         else if (variables2.test(w)) {
@@ -44,6 +40,10 @@ CodeMirror.defineMode('lalu', function() {
         }
         else if (numbers.test(w)) {
           return 'number';
+        }
+        else if (keywords1.test(w)) {
+          state.context = 1;
+          return 'keyword';
         }
       } else if (stream.eat(';')) {
         stream.skipToEnd();

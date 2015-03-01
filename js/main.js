@@ -17,13 +17,16 @@ $('.CodeMirror').eq(0).addClass("input");
 $('.CodeMirror').eq(1).addClass("output");
 $('#compilestatus').css("display", "none");
 
-$('.CodeMirror.input').change(function() { changeCode(); });
+input.on("changes", function() {
+   changeCode();
+});
 $('#assemblystyle').change(function() { changeCode(); });
 $('#downloadbutton').click(function() { assemble(); });
 
 $(window).resize(function() { resize(); });
 
 function getlist() {
+  $('#downloadbutton').prop("disabled", true);
   $.ajax({
     url: "/api/asm/list",
     type: "GET",
@@ -31,6 +34,7 @@ function getlist() {
       $.each(data, function(k, v) {
         $('#assemblystyle').append('<option value="' + k + '">' + v.name + '</option>');
       });
+      $('#downloadbutton').prop("disabled", false);
     },
     failure: function() {
        $('#assemblystyle').append('<option value=-1>Default</option>');
@@ -48,13 +52,9 @@ function assemble() {
     success: function(data) {
       output.setValue(data.text);
       binary_logisim = data.logisim;
-      $('#compilestatus').css("display", "none");
-      $('#downloadbutton').css("display", "block");
     },
     failure: function() {
       console.error("ERROR!");
-      $('#compilestatus').css("display", "none");
-      $('#downloadbutton').css("display", "block");
     }
   });
 }
@@ -66,8 +66,7 @@ function resize() {
   else { $('.fragment').height(h - $('navbar').height() - 64); }
 }
 function changeCode() {
-  $('#compilestatus').css("display", "block");
-  $('#downloadbutton').css("display", "none");
+  console.log("FIRED!");
 
   assemble();
 }
