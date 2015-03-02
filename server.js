@@ -175,8 +175,6 @@ app.use('/api/asm', function(req, res) {
             for (var i = 0; i < args.length; i++) {
               var wrd = words[i + 1];
               var type = gettype(wrd);
-              console.log(wrd);
-              console.log(type);
               if (type === undefined)
               {
                 out = [ 'ER', "unknown parameter '" + wrd + "'" ];
@@ -243,6 +241,7 @@ app.use('/js', express.static(__dirname + '/js'));
 // Handle 404
 app.use(function(req, res) {
   //TODO handle
+  console.log("404");
 });
 
 // Handle 500
