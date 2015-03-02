@@ -153,6 +153,11 @@ app.use('/api/asm', function(req, res) {
   j.forEach(function(line) {
     line = S(line).trim().toString();
     //TODO remove everything after a semicolon
+
+    if (line.match(/^.*(?=;)/ig) != null)
+    {
+      line = line.match(/^.*(?=;)/ig)[0]; //remove comments
+    }
     var words = line.match(/\w+/ig);
     //TODO remove "h" from the ends of words and convert these to hex
     if (words != null) {
