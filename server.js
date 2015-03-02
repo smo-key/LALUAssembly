@@ -241,7 +241,6 @@ app.use('/js', express.static(__dirname + '/js'));
 // Handle 404
 app.use(function(req, res) {
   //TODO handle
-  console.log("404");
 });
 
 // Handle 500
