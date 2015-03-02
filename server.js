@@ -36,7 +36,7 @@ configname = process.argv[2] || "config.yml";
 /* READ SERVER CONFIG */
 configdata = fs.readFileSync(configname);
 config = yaml.safeLoad(configdata);
-config.port = process.env.PORT || 3000; //server port
+config.port = process.env.PORT || config.port || 8000; //server port
 
 /* EXPRESS */
 app.use(logger('dev'));
