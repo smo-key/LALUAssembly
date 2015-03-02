@@ -39,10 +39,7 @@ config = yaml.safeLoad(configdata);
 config.port = process.env.PORT || config.port || 8000; //server port
 
 /* EXPRESS */
-if (process.env.PORT !== undefined)
-{
-  if (process.env.PORT != null) { app.use(logger('dev')); }
-}
+//app.use(logger('dev'));
 
 app.param(function(name, fn){
   if (fn instanceof RegExp) {
