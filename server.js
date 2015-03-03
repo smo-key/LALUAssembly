@@ -147,21 +147,21 @@ app.use('/api/asm', function(req, res) {
   var format = list[req.query.type];
   var s = req.query.text;
   var text = ""; //text output
-  //TODO logisim output
+  var logisim = "v2.0 raw\r\n";
+  var logisimcount = 0; //newline every 8 values
 
   var j = s.toString().split("\n");
   j.forEach(function(line) {
     line = S(line).trim().toString();
-    //TODO remove everything after a semicolon
-
+    //remove everything after ;
     if (line.match(/^.*(?=;)/ig) != null)
     {
       line = line.match(/^.*(?=;)/ig)[0]; //remove comments
     }
     var words = line.match(/\w+/ig);
-    //TODO remove "h" from the ends of words and convert these to hex
+    //remove "h" from the ends of words and convert these to hex
     if (words != null) {
-      var out = [ 'ER', "instruction '" + words[0] + "' not found"];
+      var out = [ 'ER', "instruction '" + words[0] + "' not found", true];
       if (format.ops[words[0]] !== undefined)
       {
         if (format.ops[words[0]].args !== undefined)
@@ -182,7 +182,8 @@ app.use('/api/asm', function(req, res) {
               var type = gettype(wrd);
               if (type === undefined)
               {
-                out = [ 'ER', "unknown parameter '" + wrd + "'" ];
+                //[ binary output, help text, iserror ]
+                out = [ 'ER', "unknown parameter '" + wrd + "'", true ];
                 argsok = false;
                 break;
               }
@@ -190,7 +191,7 @@ app.use('/api/asm', function(req, res) {
               {
                 if (type[1] > args[i].maxbits)
                 {
-                  out = [ 'ER', "'" + wrd + "' greater than " + args[i].maxbits + " bits" ];
+                  out = [ 'ER', "'" + wrd + "' greater than " + args[i].maxbits + " bits", true ];
                   argsok = false;
                   break;
                 }
@@ -208,16 +209,29 @@ app.use('/api/asm', function(req, res) {
                 else if (l == 4) { out = inst(words[1], words[2], words[3]); }
                 else if (l == 5) { out = inst(words[1], words[2], words[3], words[4]); }
                 else if (l == 6) { out = inst(words[1], words[2], words[3], words[4], words[5]); }
-                else { out = [ 'ER', "too many parameters" ]; }
+                else { out = [ 'ER', "too many parameters", true ]; }
               }
             }
-          } else { out = [ 'ER', "too few parameters" ]; }
+          } else { out = [ 'ER', "too few parameters", true ]; }
         }
       }
+      //TODO unhardcode bit length
+      while (out[0].toString().length < 2)
+      {
+        out[0] = "0" + out[0];
+      }
       text = text + out[0].toString() + "  ;" + out[1].toString() + "\r\n";
+      //if error
+      if (out[2] == true) {
+        if (format.onerror != null) { out[0] = format.onerror; }
+        else { out[0] = 0; }
+      }
+      logisim = logisim + parseInt(out[0], 16).toString(16) + " ";
+      logisimcount++;
+      if (logisimcount == 8) { logisimcount = 0; logisim = logisim + "\r\n"; }
     }
   });
-  sendjson({text: text}, res);
+  sendjson({text: text, logisim: logisim}, res);
 
 });
 

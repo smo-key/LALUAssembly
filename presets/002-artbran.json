@@ -59,5 +59,6 @@
       "args": [ ],
       "result": "function(addr) { return [ '08', 'no operation' ]; }"
     }
-  }
+  },
+  "onerror": "08"
 }
