@@ -248,7 +248,8 @@ app.get('/', function (req, res) {
     partials: {
       fragment: 'assembler',
       assemblerin: 'assemblerin',
-      assemblerout: 'assemblerout'
+      assemblerout: 'assemblerout',
+      assemblerdefaults: 'assemblerdefaults'
     }
   });
 });

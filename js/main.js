@@ -32,14 +32,13 @@ function getlist() {
       $.each(data, function(k, v) {
         $('#assemblystyle').append('<option value="' + k + '">' + v.name + '</option>');
       });
+      $('#downloadbutton').prop("disabled", false);
     },
     failure: function() {
        $('#assemblystyle').append('<option value=-1>Default</option>');
     }
   });
 }
-
-var binary_logisim = "";
 
 function assemble() {
   $.ajax({
