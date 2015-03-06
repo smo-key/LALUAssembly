@@ -58,13 +58,6 @@
       "info": "Does absolutely nothing",
       "args": [ ],
       "result": "function(addr) { return [ '08', 'no operation' ]; }"
-    },
-    "jpos": {
-      "name": "Jump if Positive",
-      "info": "Jump to address if A is positive or zero",
-      "args": [{"name": "addr[4:0]", "req": true,
-              "info": "5-bit Address in RAM", "maxbits": 5}],
-      "result": "function(addr) { var a = parseInt(addr, 16)*8+9; return [ a.toString(16), 'jump to ' + addr.toString(16) + 'h if A>=0' ]; }"
     }
   },
   "onerror": "08"
