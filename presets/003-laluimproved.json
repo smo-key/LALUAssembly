@@ -44,5 +44,5 @@
       "results": "function() { return [ '00001000', 'A or B -> A' ]; }"
     }
   },
-  "onerror": "00000000"
+  "onerror": "00000000" 
 }
