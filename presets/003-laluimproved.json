@@ -42,8 +42,7 @@
       "info": "Tests if A or B are greater than 0 and stores the result in A",
       "args": [ ],
       "results": "function() { return [ '00001000', 'A or B -> A' ]; }"
-    },
-    
+    }
   },
   "onerror": "00000000"
 }
