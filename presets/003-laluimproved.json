@@ -6,7 +6,44 @@
       "info": "Does nothing",
       "args": [ ],
       "result": "function() { return [ '00000000', 'no operation']; }"
-    }
+    },
+    "exc": {
+      "name": "Exchange",
+      "info": "Exchange the values of the A and B registers",
+      "args": [ ],
+      "result": "function() { return [ '00000001', 'swap values of A and B' ]; }"
+    },
+    "incr": {
+      "name": "Increment",
+      "info": "Adds 1 to A",
+      "args": [ ],
+      "result": "function() { return [ '00000002', 'A + 1 -> A']; }"
+    },
+    "decr": {
+      "name": "Decrement",
+      "info": "Subtracts 1 from A",
+      "args": [ ],
+      "result": "function() { return [ '00000003', 'A - 1 -> A']; }"
+    },
+    "add": {
+      "name": "Add",
+      "info": "Add registers A and B together and store in A",
+      "args": [ ],
+      "result": "function() { return [ '00001000', 'A + B -> A' ]; }"
+    },
+    "sub": {
+      "name": "Subtract",
+      "info": "Substract B from A and store result in A",
+      "args": [ ],
+      "result": "function() { return [ '00000110', 'A - B -> A' ]; }"
+    },
+    "or": {
+      "name": "Or",
+      "info": "Tests if A or B are greater than 0 and stores the result in A",
+      "args": [ ],
+      "results": "function() { return [ '00001000', 'A or B -> A' ]; }"
+    },
+    
   },
   "onerror": "00000000"
 }
