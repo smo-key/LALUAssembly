@@ -2,7 +2,7 @@
   "name": "LALU Improved",
   "ops": {
     "nop": {
-      "name:" "No Operation",
+      "name": "No Operation",
       "info": "Does nothing",
       "args": [ ],
       "result": "function() { return [ '00000000', 'no operation']; }"
